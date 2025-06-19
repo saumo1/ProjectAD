@@ -1,0 +1,37 @@
+﻿@{
+    string isAuthorized = string.Empty;
+    if (Session["IsAuthorized"] != null)
+    {
+        isAuthorized = Convert.ToString(Session["IsAuthorized"]);
+        Session["IsAuthorized"] = null;
+    }
+ }
+@if (Request.IsAuthenticated)
+{
+    <text>
+        <ul class="navbar-nav navbar-right">
+            <li class="navbar-text">
+                Hello, @User.Identity.Name
+            </li>
+            <li>
+                @Html.ActionLink("Sign out", "SignOut", "Account", new { area = "" }, new { @class = "nav-link" })
+            </li>
+        </ul>
+    </text>
+}
+else if (isAuthorized.Equals("false",StringComparison.InvariantCultureIgnoreCase))
+{
+    <text>
+        <ul class="navbar-nav navbar-right">
+            <li>
+                @Html.ActionLink("Sign out", "SignOut", "Account", new { area = "" }, new { @class = "nav-link" })
+            </li>
+        </ul>
+    </text>
+}
+else
+{
+    <ul class="navbar-nav navbar-right">
+        <li>@Html.ActionLink("Sign in", "SignIn", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link" })</li>
+    </ul>
+}
